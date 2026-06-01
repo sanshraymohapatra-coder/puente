@@ -103,6 +103,20 @@ def demo_message():
     return jsonify({"reply": reply})
 
 
+# ── Temporary diagnostic (remove after confirming vars) ──────────────────────
+
+@app.route("/debug/env", methods=["GET"])
+def debug_env():
+    import os
+    key = os.getenv("ANTHROPIC_API_KEY", "")
+    sid = os.getenv("TWILIO_ACCOUNT_SID", "")
+    return {
+        "anthropic_key_present": bool(key),
+        "anthropic_key_prefix": key[:8] if key else "MISSING",
+        "twilio_sid_present": bool(sid),
+    }, 200
+
+
 # ── Local dev entry point ─────────────────────────────────────────────────────
 
 if __name__ == "__main__":

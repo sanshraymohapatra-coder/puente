@@ -23,6 +23,20 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN", "")
 
+# ── DB init — runs under both gunicorn and direct python ─────────────────────
+# (gunicorn never hits __main__, so init must happen at import time)
+def _startup():
+    init_db()
+    from database import get_db
+    conn = get_db()
+    count = conn.execute("SELECT COUNT(*) FROM resources").fetchone()[0]
+    conn.close()
+    if count == 0:
+        from seed import seed
+        seed()
+
+_startup()
+
 
 # ── Webhook ───────────────────────────────────────────────────────────────────
 
@@ -89,22 +103,10 @@ def demo_message():
     return jsonify({"reply": reply})
 
 
-# ── Startup ───────────────────────────────────────────────────────────────────
+# ── Local dev entry point ─────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    init_db()
-
-    # Seed the database if it's empty
-    from database import get_db
-    conn = get_db()
-    count = conn.execute("SELECT COUNT(*) FROM resources").fetchone()[0]
-    conn.close()
-    if count == 0:
-        print("No resources found — running seed...")
-        from seed import seed
-        seed()
-
-    port = int(os.getenv("PORT", 5000))
+    port = int(os.getenv("PORT", 5001))
     debug = os.getenv("FLASK_ENV", "production") == "development"
     print(f"Puente running on port {port} (debug={debug})")
     app.run(host="0.0.0.0", port=port, debug=debug)

@@ -288,7 +288,7 @@
       </div>
 
       <div class="input-area">
-        <input type="text" id="userInput" placeholder='Try "hi" or "hola"' autocomplete="off" />
+        <input type="text" id="userInput" placeholder='Try "hi", "hola", "FA", or "HINDI"' autocomplete="off" />
         <button id="sendBtn" onclick="sendMessage()">
           <svg class="send-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
@@ -313,6 +313,11 @@
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
+  // Detect Arabic/Farsi script to apply RTL direction on the bubble
+  function isRTL(text) {
+    return /[؀-ۿ]/.test(text);
+  }
+
   function appendBubble(text, role) {
     const messages = document.getElementById('messages');
     const row = document.createElement('div');
@@ -320,6 +325,10 @@
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
     bubble.textContent = text;
+    if (isRTL(text)) {
+      bubble.dir = 'rtl';
+      bubble.style.textAlign = 'right';
+    }
     row.appendChild(bubble);
     messages.appendChild(row);
     messages.scrollTop = messages.scrollHeight;

@@ -18,6 +18,7 @@ from strings import (
     s, detect_language, format_resource,
     MENU_CHOICES, STOP_WORDS, HELP_WORDS,
     START_WORDS, MORE_WORDS, EN_WORDS, ES_WORDS,
+    FA_WORDS, HI_WORDS,
 )
 from classifier import classify_message
 
@@ -38,8 +39,12 @@ def handle_message(body: str, phone_number: str) -> str:
     # ── Global keywords — handled before any session logic ──────────────────
 
     if msg_upper in STOP_WORDS:
+        existing = get_session(session_key)
         delete_session(session_key)
-        lang = "es" if msg_upper in {"ALTO", "CANCELAR"} else "en"
+        if msg_upper in {"ALTO", "CANCELAR"}:
+            lang = "es"
+        else:
+            lang = existing["language"] if existing else "en"
         return s(lang, "stop")
 
     if msg_upper in HELP_WORDS:
@@ -54,6 +59,14 @@ def handle_message(body: str, phone_number: str) -> str:
     if msg_upper in ES_WORDS:
         save_session(session_key, "menu", language="es")
         return s("es", "welcome")
+
+    if msg_upper in FA_WORDS or msg in FA_WORDS:
+        save_session(session_key, "menu", language="fa")
+        return s("fa", "welcome")
+
+    if msg_upper in HI_WORDS or msg in HI_WORDS:
+        save_session(session_key, "menu", language="hi")
+        return s("hi", "welcome")
 
     # ── Load session ──────────────────────────────────────────────────────────
 

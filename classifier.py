@@ -55,7 +55,7 @@ no punctuation, no explanation:
 
 Rules:
 - Respond with ONLY the category code. No other words.
-- If the message is in Spanish, still return the English category code.
+- If the message is in Spanish, Farsi, Hindi, or any other language, still return the English category code.
 - If genuinely unsure between two categories, pick the broader one (general
   beats a specific category when uncertain).
 - If the message is completely unrelated to health (e.g. spam, random letters),

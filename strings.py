@@ -31,6 +31,7 @@ STRINGS = {
             "(We use this only to find nearby resources — we never save it.)"
         ),
         "results_header": "Here are {count} free options near {zip}:\n",
+        "results_header_one": "Here is 1 free option near {zip}:\n",
         "walk_in": "Walk-ins welcome",
         "more_prompt": "\nReply MORE for more results, or START to search again.",
         "no_more": "\nReply START to search again.",
@@ -100,6 +101,7 @@ STRINGS = {
             "(Solo lo usamos para encontrar recursos cercanos — nunca lo guardamos.)"
         ),
         "results_header": "Aqui hay {count} opciones gratuitas cerca de {zip}:\n",
+        "results_header_one": "Aqui hay 1 opcion gratuita cerca de {zip}:\n",
         "walk_in": "Sin cita necesaria",
         "more_prompt": "\nResponde MAS para mas resultados, o INICIO para buscar de nuevo.",
         "no_more": "\nResponde INICIO para buscar de nuevo.",

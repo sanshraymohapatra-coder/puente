@@ -172,7 +172,10 @@ def handle_message(body: str, phone_number: str) -> str:
 def _build_results_message(results: list, has_more: bool,
                             zip_code: str, lang: str) -> str:
     """Format a list of resources into a single SMS-friendly string."""
-    header = s(lang, "results_header", count=len(results), zip=zip_code)
+    if len(results) == 1 and s(lang, "results_header_one"):
+        header = s(lang, "results_header_one", zip=zip_code)
+    else:
+        header = s(lang, "results_header", count=len(results), zip=zip_code)
     blocks = []
     for i, r in enumerate(results, 1):
         blocks.append(f"{i}. {format_resource(r, lang)}")
